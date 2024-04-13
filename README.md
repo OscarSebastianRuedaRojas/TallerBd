@@ -366,3 +366,155 @@ ORDER BY precio DESC, nombre ASC
 ```
 
 ![image-20240412085850083](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412085850083.png)
+
+# Consultas multitabla (Composición interna)
+
+1. #### Devuelve una lista con el nombre del producto, precio y nombre de fabricante de todos los productos de la base de datos.
+
+```sql
+SELECT p.nombre, p.precio, f.nombre
+	FROM public.fabricante as f, public.producto as p
+	where p.codigo_fabricante = f.codigo;
+```
+
+![image-20240412204801624](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412204801624.png)
+
+2. #### Devuelve una lista con el nombre del producto, precio y nombre de fabricante de todos los productos de la base de datos. Ordene el resultado
+por el nombre del fabricante, por orden alfabético.
+
+```sql
+SELECT p.nombre, p.precio, f.nombre
+	FROM public.fabricante as f, public.producto as p
+	where p.codigo_fabricante = f.codigo
+	ORDER BY f.nombre ASC;
+```
+
+![image-20240412204944771](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412204944771.png)
+
+3. #### Devuelve una lista con el identificador del producto, nombre del producto, identificador del fabricante y nombre del fabricante, de todos los productos
+de la base de datos.
+
+```sql
+SELECT p.codigo, p.nombre, f.codigo, f.nombre
+	FROM public.fabricante as f, public.producto as p
+	where p.codigo_fabricante = f.codigo;
+```
+
+![image-20240412205110007](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412205110007.png)
+
+4. #### Devuelve el nombre del producto, su precio y el nombre de su fabricante,
+
+  #### del producto más barato.
+
+```sql
+SELECT p.nombre, p.precio, f.nombre
+	FROM public.fabricante as f, public.producto as p
+	where p.codigo_fabricante = f.codigo
+	ORDER BY p.precio ASC
+	Limit 1;
+```
+
+![image-20240412205306989](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412205306989.png)
+
+5. #### Devuelve el nombre del producto, su precio y el nombre de su fabricante,
+
+  #### del producto más caro.
+
+```sql
+SELECT p.nombre, p.precio, f.nombre
+	FROM public.fabricante as f, public.producto as p
+	where p.codigo_fabricante = f.codigo
+	ORDER BY p.precio DESC
+	Limit 1;
+```
+
+![image-20240412205416987](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412205416987.png)
+
+6. #### Devuelve una lista de todos los productos del fabricante Lenovo.
+
+```sql
+SELECT p.nombre, p.precio, f.nombre
+	FROM public.fabricante as f, public.producto as p
+	where p.codigo_fabricante = f.codigo AND f.nombre = 'Lenovo';
+```
+
+![image-20240412205519543](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412205519543.png)
+
+7. #### Devuelve una lista de todos los productos del fabricante Crucial que tengan un precio mayor que 200€.
+
+```sql
+SELECT p.nombre, p.precio, f.nombre
+	FROM public.fabricante as f, public.producto as p
+	where p.codigo_fabricante = f.codigo AND f.nombre = 'Crucial' AND p.precio > 200;
+```
+
+![image-20240412205628936](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412205628936.png)
+
+8. #### Devuelve un listado con todos los productos de los fabricantes Asus, Hewlett-Packardy Seagate. Sin utilizar el operador IN.
+
+```sql
+SELECT DISTINCT p.nombre, p.precio, f.nombre
+FROM public.producto AS p, public.fabricante AS f
+WHERE p.codigo_fabricante = f.codigo 
+AND (f.nombre = 'Asus' OR f.nombre = 'Hwlett-Packard' OR f.nombre = 'Seagate');
+```
+
+![image-20240412210045982](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412210045982.png)
+
+9. #### Devuelve un listado con todos los productos de los fabricantes Asus, Hewlett-Packardy Seagate. Utilizando el operador IN.
+
+```sql
+SELECT DISTINCT p.nombre, p.precio, f.nombre
+FROM public.producto AS p, public.fabricante AS f
+WHERE p.codigo_fabricante = f.codigo 
+AND f.nombre in ('Asus', 'Hwlett-Packard', 'Seagate');
+```
+
+![image-20240412210200883](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412210200883.png)
+
+10. #### Devuelve un listado con el nombre y el precio de todos los productos de los fabricantes cuyo nombre termine por la vocal e.
+
+```sql
+SELECT DISTINCT p.nombre, p.precio, f.nombre
+FROM public.producto AS p, public.fabricante AS f
+WHERE p.codigo_fabricante = f.codigo 
+AND RIGHT(f.nombre, 1) = 'e';
+```
+
+![image-20240412210338905](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412210338905.png)
+
+11. #### Devuelve un listado con el nombre y el precio de todos los productos cuyo nombre de fabricante contenga el carácter w en su nombre.
+
+```sql
+SELECT DISTINCT p.nombre, p.precio, f.nombre
+FROM public.producto AS p, public.fabricante AS f
+WHERE p.codigo_fabricante = f.codigo 
+AND f.nombre like '%w%';
+```
+
+![image-20240412210532777](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412210532777.png)
+
+12. #### Devuelve un listado con el nombre de producto, precio y nombre de fabricante, de todos los productos que tengan un precio mayor o igual a
+180€. Ordene el resultado en primer lugar por el precio (en orden
+descendente) y en segundo lugar por el nombre (en orden ascendente)
+
+```sql
+SELECT p.nombre AS nombre_producto, p.precio, f.nombre AS nombre_fabricante
+FROM public.producto AS p, public.fabricante AS f
+WHERE p.codigo_fabricante = f.codigo
+AND p.precio >= 180
+ORDER BY p.precio DESC, p.nombre ASC;
+```
+
+![image-20240412211052428](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412211052428.png)
+
+13. #### Devuelve un listado con el identificador y el nombre de fabricante, solamente de aquellos fabricantes que tienen productos asociados en la
+base de datos.
+
+```sql
+SELECT DISTINCT f.codigo, f.nombre
+FROM public.producto AS p, public.fabricante AS f
+WHERE p.codigo_fabricante = f.codigo;
+```
+
+![image-20240412211243607](C:\Users\senit\AppData\Roaming\Typora\typora-user-images\image-20240412211243607.png)
